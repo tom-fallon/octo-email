@@ -89,12 +89,8 @@ document.getElementById('contact-form').addEventListener('submit', function(even
             document.getElementById('contact-form').reset();
             fetchContacts();
         }
-        else {
-            alert('Something went wrong please try again later.');
-        }
     })
     .catch(error => {
-        alert('Something went wrong please try again later.');
         console.error('Error:', error);
     });
 

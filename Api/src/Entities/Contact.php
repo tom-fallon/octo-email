@@ -14,7 +14,7 @@ class Contact implements JsonSerializable
     private string $email;
     private string $name;
 
-    private string $created_at;
+    private string|null $created_at;
 
 
     public function __construct(DbConnectionInterface $dbConnection, string $name, string $email, int $id = null, $createdAt = null)
@@ -132,5 +132,23 @@ class Contact implements JsonSerializable
         } else {
             return ErrorMessages::fatalErrorMessage();
         }
+    }
+
+    public function writeToApi() {
+        // Make post request to the API using curl with bearer token and contact data.
+        $url = 'http://localhost:8000/api/contact';
+        $data = [
+            'name' => $this->name,
+            'email_address' => $this->email
+        ];
+        $data_string = json_encode($data);
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($ch);
+        curl_close($ch);
+
     }
 }
